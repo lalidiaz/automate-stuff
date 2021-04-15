@@ -1,16 +1,31 @@
-# This is a sample Python script.
+import openpyxl
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+# Read our spreadsheet file.
+inv_file = openpyxl.load_workbook("inventory.xlsx")
+
+# Get the specific sheet I will work on.
+product_list = inv_file["Sheet1"]
+
+# Calculate how many products I have per supplier and list the name of
+# the suppliers with that respective number of products.
+prod_per_supplier = {}
+
+print(product_list.max_row)
+# Read how many products are in the list to iterate.
+# start from 2 and end in the last row (including)
+for product_row in range(2, product_list.max_row + 1):
+   supplier_name = product_list.cell(product_row, 4).value
+
+   if supplier_name in prod_per_supplier:
+      current_num_products = prod_per_supplier.get(supplier_name)
+      prod_per_supplier[supplier_name] = current_num_products + 1
+   else:
+      print("Adding a new supplier")
+      prod_per_supplier[supplier_name] = 1
+
+print(prod_per_supplier)
+
+# Calculate the total inventory value per supplier:
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
